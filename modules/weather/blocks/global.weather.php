@@ -16,17 +16,17 @@ if( ! nv_function_exists( 'nv_weather_blocks' ) )
 	{
 		global $nv_Cache;
 		$html = '';
-		$html .= '<tr>';
-		$html .= '	<td>' . $lang_block['location'] . '</td>';
-		$html .= "	<td><select name=\"location\">\n";
+        $html .= '<div class="form-group">';
+		$html .= '	<label class="control-label col-sm-6">' . $lang_block['location'] . '</label>';
+		$html .= "	<div class=\"col-sm-18\"><select class=\"form-control\" name=\"location\">\n";
 		$sql = "SELECT * FROM " . NV_PREFIXLANG . "_weather WHERE status = 1 ORDER BY weight ASC";
         $list = $nv_Cache->db( $sql, '', $module );
         foreach( $list as $l )
 		{
 			$html .= '<option value="' . $l['location_code'] . '" ' . ( ( $data_block['location'] == $l['location_code'] ) ? ' selected="selected"' : '' ) . '>' . $l['location_name'] . '</option>';
 		}
-		$html .= '</select></td>';
-		$html .= '</tr>';
+		$html .= '</select></div>';
+		$html .= '</div>';
 
 		return $html;
 	}

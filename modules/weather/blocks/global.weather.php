@@ -45,7 +45,7 @@ if( ! nv_function_exists( 'nv_weather_blocks' ) )
 	{
 		global $global_config, $site_mods, $db, $module_config, $nv_Cache;
 		$module = $block_config['module'];
-		$module_config = $module_config[$module];
+		$weather_config = $module_config[$module];
         $array_th = array();
         
         $cache_file = '';
@@ -73,13 +73,13 @@ if( ! nv_function_exists( 'nv_weather_blocks' ) )
         }
 
         $xtpl = new XTemplate( 'block.weather.tpl', NV_ROOTDIR . '/themes/' . $block_theme . '/modules/weather' );
-        if( !empty($module_config['openweather_api'])){
+        if( !empty($weather_config['openweather_api'])){
             $xtpl->assign( 'TEMPLATE', $block_theme );
             $xtpl->assign( 'CODE', $block_config['location'] );
             
             
             if (empty($contents)) {
-                $json_array = file_get_contents('http://api.openweathermap.org/data/2.5/weather?id=' . $block_config['location'] . '&lang=' . NV_LANG_DATA . '&units=metric&appid=' . $module_config['openweather_api'] . '');
+                $json_array = file_get_contents('http://api.openweathermap.org/data/2.5/weather?id=' . $block_config['location'] . '&lang=' . NV_LANG_DATA . '&units=metric&appid=' . $weather_config['openweather_api'] . '');
                 $contents = json_decode($json_array, true);
             }
             if ( $contents != '' and $cache_file != '') {

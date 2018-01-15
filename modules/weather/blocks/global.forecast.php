@@ -45,7 +45,7 @@ if( ! nv_function_exists( 'nv_forecast_blocks' ) )
 	{
 		global $global_config, $site_mods, $db, $module_config, $nv_Cache;
 		$module = $block_config['module'];
-		$module_config = $module_config[$module];
+		$weather_config = $module_config[$module];
         $array_th = array();
         
         $cache_file = '';
@@ -73,36 +73,47 @@ if( ! nv_function_exists( 'nv_forecast_blocks' ) )
         }
 
         $xtpl = new XTemplate( 'block.forecast.tpl', NV_ROOTDIR . '/themes/' . $block_theme . '/modules/weather' );
-        if( !empty($module_config['openweather_api'])){
+        if( !empty($weather_config['openweather_api'])){
             $xtpl->assign( 'TEMPLATE', $block_theme );
             $xtpl->assign( 'CODE', $block_config['location'] );
             
             
             if (empty($contents)) {
-                $json_array = file_get_contents('http://api.openweathermap.org/data/2.5/forecast?id=' . $block_config['location'] . '&lang=' . NV_LANG_DATA . '&units=metric&appid=' . $module_config['openweather_api'] . '');
+                $json_array = file_get_contents('http://api.openweathermap.org/data/2.5/forecast?id=' . $block_config['location'] . '&lang=' . NV_LANG_DATA . '&units=metric&appid=' . $weather_config['openweather_api']);
                 $contents = json_decode($json_array, true);
             }
             if ( $contents != '' and $cache_file != '') {
                 $nv_Cache->setItem($module, $cache_file, $contents);
             }
-            var_dump($contents['list'][24]);die;
-            $row['description'] = $contents['weather'][0]['description'];
-            $row['icon'] = $contents['weather'][0]['icon'];
             
-            $row['temp'] = $contents['main']['temp'];
-            $row['humidity'] = $contents['main']['humidity'];
-            $row['temp_min'] = $contents['main']['temp_min'];
-            $row['temp_max'] = $contents['main']['temp_max'];
-            
-            $row['wind_speed'] = $contents['wind']['speed'];
-            
-            $row['country'] = $contents['sys']['country'];
-            $row['sunrise'] = nv_date('H:i', $contents['sys']['sunrise']);
-            $row['sunset'] = nv_date('H:i', $contents['sys']['sunset']);
-            
-            $row['location_name'] = $contents['name'];
-            
+            $forecast = array();
+            $arr_forecast_id = array('0','8','16','24','32');
+            foreach( $contents['list'] as $key => $array_forecast ){
+                if( ! in_array( $key, $arr_forecast_id)){
+                    unset ($array_forecast);
+                }
+                if( isset($array_forecast) and !empty($array_forecast) ){
+
+                    $forecast[$key]['date'] = nv_date('d/m', $array_forecast['dt']);
+                    $forecast[$key]['temp'] = $array_forecast['main']['temp'];
+                    $forecast[$key]['temp_min'] = $array_forecast['main']['temp_min'];
+                    $forecast[$key]['temp_max'] = $array_forecast['main']['temp_max'];
+                    $forecast[$key]['icon'] = $array_forecast['weather'][0]['icon'];
+                    $forecast[$key]['humidity'] = $array_forecast['main']['humidity'];
+                    $forecast[$key]['wind_speed'] = $array_forecast['wind']['speed'];
+                    $forecast[$key]['description'] = $array_forecast['weather'][0]['description'];
+                }
+            }
+            $row = $forecast[0];
+
+            $row['country'] = $contents['city']['country'];
+            $row['location_name'] = $contents['city']['name'];
             $row['now'] = nv_date('H:i D', NV_CURRENTTIME);
+            
+            foreach( $forecast as $data ){
+                $xtpl->assign( 'DATA', $data );
+                $xtpl->parse( 'main.forecast' );
+            }
             
             $xtpl->assign( 'ROW', $row );
             

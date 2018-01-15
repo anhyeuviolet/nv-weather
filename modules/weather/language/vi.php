@@ -16,3 +16,10 @@ $lang_translator['info'] = '';
 $lang_translator['langtype'] = 'lang_module';
 
 $lang_module['location'] = 'Tỉnh/thành phố';
+$lang_module['min_max_temp'] = 'Nhiệt độ thấp nhất/cao nhất';
+$lang_module['wind'] = 'Gió';
+$lang_module['humidity'] = 'Độ ẩm';
+$lang_module['today_weather'] = 'Thời tiết hôm nay';
+$lang_module['sunrise'] = 'Mặt trời mọc';
+$lang_module['sunset'] = 'Mặt trời lặn';
+$lang_module['api_error'] = 'Thiếu hoặc sai API';

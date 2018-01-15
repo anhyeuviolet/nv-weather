@@ -2,7 +2,7 @@
 <div class="panel-body">
     <div class="vk_gy vk_h" id="wob_loc">{ROW.location_name}, {ROW.country}</div>
     <div class="vk_gy vk_sh" id="wob_dts">{ROW.now}</div>
-    <div id="wob_dcp"><span class="vk_gy vk_sh" id="wob_dc">Thời tiết hôm nay: {ROW.description}</span></div>
+    <div id="wob_dcp"><span class="vk_gy vk_sh" id="wob_dc">{LANG.today_weather}: {ROW.description}</span></div>
     
     <img style="float:left;height:64px;width:64px" alt="{ROW.description}" src="http://openweathermap.org/img/w/{ROW.icon}.png" id="wob_tci">    
     <div style="padding-left:10px;float:left">
@@ -16,11 +16,11 @@
 
     
     <div class="vk_gy vk_sh wob-dtl" style="float:right;padding-left:5px;line-height:22px;padding-top:2px;min-width:43%">
-        <div>Độ ẩm: <span id="wob_hm">{ROW.humidity} %</span></div>
-        <div>Gió: <span><span class="wob_t" id="wob_ws">{ROW.wind_speed} m/s</span></span></div>
-        <div>Nhiệt độ thấp nhất/cao nhất: <span><span class="wob_t" id="wob_tmpmm">{ROW.temp_min} °C - {ROW.temp_max} °C</span></span></div>
-        <div>Mặt trời mọc: <span><span class="wob_t" id="wob_srss">{ROW.sunrise}</span></span></div>
-        <div>Mặt trời lặn: <span><span class="wob_t" id="wob_ss">{ROW.sunset}</span></span></div>
+        <div>{LANG.humidity}: <span id="wob_hm">{ROW.humidity} %</span></div>
+        <div>{LANG.wind}: <span><span class="wob_t" id="wob_ws">{ROW.wind_speed} m/s</span></span></div>
+        <div>{LANG.min_max_temp}: <span><span class="wob_t" id="wob_tmpmm">{ROW.temp_min} °C - {ROW.temp_max} °C</span></span></div>
+        <div>{LANG.sunrise}: <span><span class="wob_t" id="wob_srss">{ROW.sunrise}</span></span></div>
+        <div>{LANG.sunset}: <span><span class="wob_t" id="wob_ss">{ROW.sunset}</span></span></div>
     </div>    
 </div>
 <style>
@@ -33,4 +33,4 @@
     }
 </style>
 <!-- END: main -->
-<!-- BEGIN: no_api --><p class="text-danger"><strong>API is missing</strong></p><!-- END: no_api -->
+<!-- BEGIN: no_api --><p class="text-danger"><strong>{LANG.api_error}</strong></p><!-- END: no_api -->

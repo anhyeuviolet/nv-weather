@@ -45,6 +45,9 @@ if( ! nv_function_exists( 'nv_weather_blocks' ) )
 	{
 		global $global_config, $site_mods, $db, $module_config, $nv_Cache;
 		$module = $block_config['module'];
+        if ($module_name != $module ){
+            require NV_ROOTDIR . '/modules/' . $module . '/language/' . NV_LANG_DATA . '.php';
+        }
 		$weather_config = $module_config[$module];
         $array_th = array();
         
@@ -105,6 +108,7 @@ if( ! nv_function_exists( 'nv_weather_blocks' ) )
             $row['now'] = nv_date('H:i D', NV_CURRENTTIME);
             
             $xtpl->assign( 'ROW', $row );
+            $xtpl->assign( 'LANG', $lang_module );
             
             $xtpl->parse( 'main' );
             return $xtpl->text( 'main' );

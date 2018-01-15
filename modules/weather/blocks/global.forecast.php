@@ -43,11 +43,13 @@ if( ! nv_function_exists( 'nv_forecast_blocks' ) )
 
 	function nv_forecast_blocks( $block_config )
 	{
-		global $global_config, $site_mods, $db, $module_config, $nv_Cache;
+		global $global_config, $site_mods, $db, $module_config, $module_name, $nv_Cache, $lang_block;
 		$module = $block_config['module'];
+        if ($module_name != $module ){
+            require NV_ROOTDIR . '/modules/' . $module . '/language/' . NV_LANG_DATA . '.php';
+        }
 		$weather_config = $module_config[$module];
         $array_th = array();
-        
         $cache_file = '';
         $contents = '';
 
@@ -77,7 +79,6 @@ if( ! nv_function_exists( 'nv_forecast_blocks' ) )
             $xtpl->assign( 'TEMPLATE', $block_theme );
             $xtpl->assign( 'CODE', $block_config['location'] );
             
-            
             if (empty($contents)) {
                 $json_array = file_get_contents('http://api.openweathermap.org/data/2.5/forecast?id=' . $block_config['location'] . '&lang=' . NV_LANG_DATA . '&units=metric&appid=' . $weather_config['openweather_api']);
                 $contents = json_decode($json_array, true);
@@ -93,7 +94,6 @@ if( ! nv_function_exists( 'nv_forecast_blocks' ) )
                     unset ($array_forecast);
                 }
                 if( isset($array_forecast) and !empty($array_forecast) ){
-
                     $forecast[$key]['date'] = nv_date('d/m', $array_forecast['dt']);
                     $forecast[$key]['temp'] = $array_forecast['main']['temp'];
                     $forecast[$key]['temp_min'] = $array_forecast['main']['temp_min'];
@@ -116,6 +116,7 @@ if( ! nv_function_exists( 'nv_forecast_blocks' ) )
             }
             
             $xtpl->assign( 'ROW', $row );
+            $xtpl->assign( 'LANG', $lang_module );
             
             $xtpl->parse( 'main' );
             return $xtpl->text( 'main' );

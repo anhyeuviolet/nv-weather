@@ -33,4 +33,6 @@
     }
 </style>
 <!-- END: main -->
-<!-- BEGIN: no_api --><p class="text-danger"><strong>{LANG.api_error}</strong></p><!-- END: no_api -->
+<!-- BEGIN: no_api -->
+<p class="text-danger"><strong>{LANG.api_error}</strong></p>
+<!-- END: no_api -->

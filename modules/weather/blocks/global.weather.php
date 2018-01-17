@@ -16,18 +16,37 @@ if( ! nv_function_exists( 'nv_weather_blocks' ) )
 	{
 		global $nv_Cache;
 		$html = '';
-		$html .= '<tr>';
-		$html .= '	<td>' . $lang_block['location'] . '</td>';
-		$html .= "	<td><select name=\"location\">\n";
-		$sql = "SELECT * FROM " . NV_PREFIXLANG . "_weather WHERE status = 1 ORDER BY weight ASC";
+		$html .= '<div>';
+		$html .= '<label class="control-label col-sm-6">' . $lang_block['location'] . '</label>';
+		$html .= "<div class=\"col-sm-18\"><select class=\"form-control\" name=\"location\" id=\"location_weather\">\n";
+		$sql = "SELECT location_code, location_name FROM " . NV_PREFIXLANG . "_weather WHERE status = 1 ORDER BY weight ASC";
         $list = $nv_Cache->db( $sql, '', $module );
         foreach( $list as $l )
 		{
 			$html .= '<option value="' . $l['location_code'] . '" ' . ( ( $data_block['location'] == $l['location_code'] ) ? ' selected="selected"' : '' ) . '>' . $l['location_name'] . '</option>';
 		}
-		$html .= '</select></td>';
-		$html .= '</tr>';
-
+		$html .= '</select></div>';
+		$html .= '</div>';
+        
+		$html .= '<script type="text/javascript" src="' . NV_BASE_SITEURL . NV_ASSETS_DIR . '/js/select2/select2.min.js"></script>
+                    <script type="text/javascript" src="' . NV_BASE_SITEURL . NV_ASSETS_DIR . '/js/select2/i18n/{NV_LANG_INTERFACE}.js"></script>
+                    <script type="text/javascript" src="' . NV_BASE_SITEURL . NV_ASSETS_DIR . '/js/jquery-ui/jquery-ui.min.js"></script>
+                    ';
+		$html .= '<link type="text/css" href="' . NV_BASE_SITEURL . NV_ASSETS_DIR . '/js/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
+                    <link rel="stylesheet" href="' . NV_BASE_SITEURL . NV_ASSETS_DIR . '/js/select2/select2.min.css">
+                    ';
+                    
+		$html .= '<script type="text/javascript">
+                //<![CDATA[
+                $(document).ready(function() {
+                    $("#location_weather").select2({
+                    placeholder: "---------"
+                    });
+                });
+                //]]>
+                </script>
+                ';
+        
 		return $html;
 	}
 
@@ -43,7 +62,7 @@ if( ! nv_function_exists( 'nv_weather_blocks' ) )
 
 	function nv_weather_blocks( $block_config )
 	{
-		global $global_config, $site_mods, $db, $module_config, $nv_Cache;
+		global $global_config, $site_mods, $db, $module_config, $module_name, $nv_Cache;
 		$module = $block_config['module'];
         if ($module_name != $module ){
             require NV_ROOTDIR . '/modules/' . $module . '/language/' . NV_LANG_DATA . '.php';
@@ -76,6 +95,8 @@ if( ! nv_function_exists( 'nv_weather_blocks' ) )
         }
 
         $xtpl = new XTemplate( 'block.weather.tpl', NV_ROOTDIR . '/themes/' . $block_theme . '/modules/weather' );
+        $xtpl->assign( 'LANG', $lang_module );
+        
         if( !empty($weather_config['openweather_api'])){
             $xtpl->assign( 'TEMPLATE', $block_theme );
             $xtpl->assign( 'CODE', $block_config['location'] );
@@ -108,7 +129,6 @@ if( ! nv_function_exists( 'nv_weather_blocks' ) )
             $row['now'] = nv_date('H:i D', NV_CURRENTTIME);
             
             $xtpl->assign( 'ROW', $row );
-            $xtpl->assign( 'LANG', $lang_module );
             
             $xtpl->parse( 'main' );
             return $xtpl->text( 'main' );

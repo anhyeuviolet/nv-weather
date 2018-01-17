@@ -2,8 +2,7 @@
 
 /**
  * @Project Weather 4.3.00
- * @Author Thuc Vinh (tichtacso.com@gmail.com)
- * @Copyright (C) 2017 Tich Tac So. All rights reserved
+ * @Author Kenny Nguyen (nguyentiendat713@gmail.com)
  * @Createdate 22/12/2017, 15:20
  */
 
@@ -16,7 +15,7 @@ $module_version = array(
 	'virtual' => 1,
 	'version' => '4.3.00',
 	'date' => 'Fri, 22 Dec 2017 15:00:00 GMT',
-	'author' => 'Thuc Vinh (tichtacso.com@gmail.com)',
+	'author' => 'KennyNguyen (nguyentiendat713@gmail.com)',
     'note' => '',
 	'uploads_dir' => array($module_name)
 );

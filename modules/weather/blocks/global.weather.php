@@ -62,7 +62,7 @@ if( ! nv_function_exists( 'nv_weather_blocks' ) )
 
 	function nv_weather_blocks( $block_config )
 	{
-		global $global_config, $site_mods, $db, $module_config, $module_name, $nv_Cache;
+		global $global_config, $site_mods, $db, $module_config, $module_name, $nv_Cache, $lang_module;
 		$module = $block_config['module'];
         if ($module_name != $module ){
             require NV_ROOTDIR . '/modules/' . $module . '/language/' . NV_LANG_DATA . '.php';

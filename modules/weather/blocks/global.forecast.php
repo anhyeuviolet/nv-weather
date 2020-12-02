@@ -62,7 +62,7 @@ if( ! nv_function_exists( 'nv_forecast_blocks' ) )
 
 	function nv_forecast_blocks( $block_config )
 	{
-		global $global_config, $site_mods, $db, $module_config, $module_name, $nv_Cache, $lang_block;
+		global $global_config, $site_mods, $db, $module_config, $module_name, $nv_Cache, $lang_block, $lang_module;
 		$module = $block_config['module'];
         if ($module_name != $module ){
             require NV_ROOTDIR . '/modules/' . $module . '/language/' . NV_LANG_DATA . '.php';
